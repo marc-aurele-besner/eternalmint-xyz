@@ -45,6 +45,7 @@ To get started with this project, clone the repository and install the dependenc
 ```bash
 git clone https://github.com/marc-aurele-besner/eternalmint-xyz
 cd eternalmint-xyz
+cd web
 deno install
 ```
 
@@ -56,7 +57,7 @@ Run the development server:
 deno task dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3006](http://localhost:3006) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

@@ -1,8 +1,6 @@
-import {
-  createAutoDriveApi,
-  uploadFile,
-  UploadFileStatus,
-} from "@autonomys/auto-drive";
+import { networkIdToString } from "@/app/api/utils/network";
+import { createAutoDriveApi } from "@autonomys/auto-drive";
+import { NetworkId } from '@autonomys/auto-utils';
 import { Contract, JsonRpcProvider, Wallet } from "ethers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -79,11 +77,11 @@ export const POST = async (req: NextRequest) => {
     const buffer = Buffer.from(arrayBuffer);
 
     const driveClient = createAutoDriveApi({
-      apiKey: process.env.AUTO_DRIVE_API_KEY,
+      apiKey: process.env.AUTO_DRIVE_API_KEY, 
+      network: networkIdToString(process.env.NEXT_PUBLIC_NETWORK as NetworkId)
     });
 
-    const uploadObservable = uploadFile(
-      driveClient,
+    const uploadedFileCid = await driveClient.uploadFile(
       {
         read: async function* () {
           yield buffer;
@@ -91,33 +89,13 @@ export const POST = async (req: NextRequest) => {
         name: media.name,
         mimeType: media.type,
         size: buffer.length,
-        path: media.name,
       },
       {}
     );
 
-    const uploadResponse = await new Promise<UploadFileStatus>(
-      (resolve, reject) => {
-        uploadObservable.subscribe({
-          next: (status) => {
-            console.log("Upload Status:", status);
-            if (status.cid) {
-              resolve(status);
-            }
-          },
-          error: (err) => {
-            reject(err);
-          },
-          complete: () => {
-            reject(new Error("Upload completed without receiving a CID."));
-          },
-        });
-      }
-    );
+    console.log("Final Upload Response:", uploadedFileCid);
 
-    console.log("Final Upload Response:", uploadResponse);
-
-    mediaUrl = urlFromCid(uploadResponse.cid?.toString() || "");
+    mediaUrl = urlFromCid(uploadedFileCid?.toString() || "");
 
     const metadata = {
       description,
@@ -129,8 +107,7 @@ export const POST = async (req: NextRequest) => {
     console.log("Metadata:", metadata);
 
     const metadataBuffer = Buffer.from(JSON.stringify(metadata));
-    const metadataUploadObservable = uploadFile(
-      driveClient,
+    const metadataUploadCid = await driveClient.uploadFile(
       {
         read: async function* () {
           yield metadataBuffer;
@@ -138,32 +115,13 @@ export const POST = async (req: NextRequest) => {
         name: "metadata.json",
         mimeType: "application/json",
         size: metadataBuffer.length,
-        path: "metadata.json",
       },
       {}
     );
 
-    const metadataUploadResponse = await new Promise<UploadFileStatus>(
-      (resolve, reject) => {
-        metadataUploadObservable.subscribe({
-          next: (status) => {
-            console.log("Upload Status:", status);
-            if (status.cid) {
-              resolve(status);
-            }
-          },
-          error: (err) => {
-            reject(err);
-          },
-          complete: () => {
-            reject(new Error("Upload completed without receiving a CID."));
-          },
-        });
-      }
-    );
-    const cid = metadataUploadResponse.cid?.toString() || "";
+    const cid = metadataUploadCid?.toString() || "";
 
-    console.log("Final Upload Response:", metadataUploadResponse);
+    console.log("Final Upload Response:", metadataUploadCid);
 
     // Now we need to mint the NFT
 
@@ -197,8 +155,8 @@ export const POST = async (req: NextRequest) => {
         mediaUrl,
         txHash: tx.hash,
         cids: {
-          image: uploadResponse.cid?.toString(),
-          metadata: metadataUploadResponse.cid?.toString(),
+          image: uploadedFileCid?.toString(),
+          metadata: metadataUploadCid?.toString(),
         },
       },
       { status: 200 }
