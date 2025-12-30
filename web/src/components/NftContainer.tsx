@@ -3,9 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAccount } from "wagmi";
 import { Metadata, NFT } from "../types";
 
 export const NftContainer: React.FC<{ nft: NFT }> = ({ nft }) => {
+  console.log("nft", nft);
+  const { address } = useAccount();
   const [metadata, setMetadata] = useState<Metadata | null>(null);
 
   const handleLoadMetadata = useCallback(async (cid: string) => {
@@ -13,6 +16,9 @@ export const NftContainer: React.FC<{ nft: NFT }> = ({ nft }) => {
       const res = await fetch(`/api/cid/taurus/${cid}`);
       const metadata = await res.json();
       console.log("metadata", metadata);
+      const imageCID = metadata.image.substring(
+        metadata.image.lastIndexOf("/") + 1
+      );
       return {
         ...metadata,
         image: metadata.image
@@ -105,6 +111,16 @@ export const NftContainer: React.FC<{ nft: NFT }> = ({ nft }) => {
             </Link>
           </p>
         )}
+        {address &&
+          nft.creator &&
+          address.toLowerCase() === nft.creator.toLowerCase() && (
+            <button
+              type="submit"
+              className={`px-3 py-2 font-manrope font-extrabold bg-gradient-to-r from-[#1E58FC] via-[#D914E4] to-[#F10419] text-white rounded-sm hover:bg-green-700 transition ${"bg-blue-600 hover:bg-blue-700"}`}
+            >
+              Transfer
+            </button>
+          )}
       </div>
     </li>
   );

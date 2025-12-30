@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
   const pathname = usePathname();
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const font = "font-manrope font-extrabold";
   const hover =
@@ -51,6 +51,14 @@ export const Header: React.FC = () => {
         >
           Browse NFTs
         </Link>
+        {isConnected && (
+          <Link
+            href={Routes.MY_NFTS}
+            className={activeOrHoverClass(Routes.MY_NFTS)}
+          >
+            My NFTs
+          </Link>
+        )}
         {address ? (
           <button
             type="button"
