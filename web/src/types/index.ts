@@ -6,6 +6,7 @@ export type NFT = {
   creator: string;
   quantity: number;
   cid: string;
+  tokenId?: string;
 };
 
 export type NftMinted = {
