@@ -17,19 +17,19 @@
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@autonomys/asynchronous@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@autonomys/asynchronous/-/asynchronous-1.5.0.tgz#1e8063ae1004c4d2b8b817713382e9cffa7b27b2"
-  integrity sha512-0RRag6rMOCKR0pDdu/kInKO+HKzaVdwO6M6iVt/pOpqa3v5Zy/d8VdZTJ81S6D2Rc+zD5EiMdFFG325/LkdbgA==
+"@autonomys/asynchronous@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@autonomys/asynchronous/-/asynchronous-1.6.5.tgz#6b796717a7eceb23b3a42d4e64cc9ad7d51e0a7e"
+  integrity sha512-YA0Yh1Ey5l6uxy9mQFJdWq0I4pJQ8earNEXWLellSDD4dA+JRJDNNG27MY5Fun1mnvln1LfTl72gJdQvZUZCNQ==
   dependencies:
     stream-fork "^1.0.5"
 
-"@autonomys/auto-dag-data@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@autonomys/auto-dag-data/-/auto-dag-data-1.5.0.tgz#1c09d4f1a5fd9581d00e6c6be8a576e0e6d487e6"
-  integrity sha512-lK9D3XB8T+PrrnxAkauukrK6k0zaQW4H+bqQ+YOoPeo3oU0JBJBQUd8NB6BKDOgZ8yMA0r0kX74ygvYBCVQ48w==
+"@autonomys/auto-dag-data@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@autonomys/auto-dag-data/-/auto-dag-data-1.6.5.tgz#cf65b53e553c59f989cd22432795621b08ddaa68"
+  integrity sha512-s+bKHdJIusXsdMPwnUo9C2alp7DyGNOh6FpXhtzyg329Y/vp4s5QFPjkTZ9QAMFWYr28Xvw9912SbQjujS5m/w==
   dependencies:
-    "@autonomys/asynchronous" "^1.5.0"
+    "@autonomys/asynchronous" "^1.6.5"
     "@ipld/dag-pb" "^4.1.3"
     "@peculiar/webcrypto" "^1.5.0"
     "@webbuf/blake3" "^3.0.26"
@@ -41,25 +41,25 @@
     protons "^7.6.0"
     protons-runtime "^5.5.0"
 
-"@autonomys/auto-drive@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@autonomys/auto-drive/-/auto-drive-1.5.0.tgz#d93c1b1a02cc3709bcf7a027446661af7df3b698"
-  integrity sha512-usAmv9casOy+YP1bhuH7WNPgChitvrBw3OzbPEvVvEungtdWTqd6VEb3pp6IAsLXORT64qoypuHaxaLDvqZ7+A==
+"@autonomys/auto-drive@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@autonomys/auto-drive/-/auto-drive-1.6.5.tgz#bfd58aa01c13591a8d42fd76b3e5cf81a8c3c58e"
+  integrity sha512-uxXXJqL3rVnMfRxuKBr3NnP0+0kE49t7V9pNetWY3bxfnu5ElkhVkO6xHjw5VdmMXfjuseVqVv0QTdwKMo5Veg==
   dependencies:
-    "@autonomys/asynchronous" "^1.5.0"
-    "@autonomys/auto-dag-data" "^1.5.0"
-    "@autonomys/auto-utils" "^1.5.0"
+    "@autonomys/asynchronous" "^1.6.5"
+    "@autonomys/auto-dag-data" "^1.6.5"
+    "@autonomys/auto-utils" "^1.6.5"
     blockstore-core "^5.0.2"
     jszip "^3.10.1"
-    mime-types "^3.0.1"
+    mime-types "^3.0.2"
     process "^0.11.10"
     stream "^0.0.3"
     zod "^3.24.2"
 
-"@autonomys/auto-utils@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@autonomys/auto-utils/-/auto-utils-1.5.0.tgz#f70e55a19647fb72f9ee1bf6ad18e2eefcf647c2"
-  integrity sha512-VjgHOtnRY2pu2Cthf25wg6T9O4X8EQUAevqQXdLun+0LQpt2XMkA2YBAK1glbgQZA5GeKMIzwcCt533FFvhxEg==
+"@autonomys/auto-utils@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@autonomys/auto-utils/-/auto-utils-1.6.5.tgz#9c3158ecb4bac163555bc5e734aaae5f36f477cf"
+  integrity sha512-azr2lO+9Zw8bQDDifn0OviXgQ3oZf/0wNY26rNZmbyXFOWv3Tc/9WuYBpn7qq0WsMhrFkBfo2D0Y9zsWjSFErg==
   dependencies:
     "@polkadot/api" "^15.8.1"
     "@polkadot/extension-dapp" "^0.58.6"
@@ -4651,10 +4651,10 @@ mime-db@^1.54.0:
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.54.0.tgz#cddb3ee4f9c64530dff640236661d42cb6a314f5"
   integrity sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==
 
-mime-types@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-3.0.1.tgz#b1d94d6997a9b32fd69ebaed0db73de8acb519ce"
-  integrity sha512-xRc4oEhT6eaBpU1XF7AjpOFD+xQmXNB5OVKwp4tqCuBpHLS/ZbBDrc07mYTDqVMg6PfxUjjNp85O6Cd2Z/5HWA==
+mime-types@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-3.0.2.tgz#39002d4182575d5af036ffa118100f2524b2e2ab"
+  integrity sha512-Lbgzdk0h4juoQ9fCKXW4by0UJqj+nOOrI9MJ1sSj4nI8aI2eo1qmvQEie4VD1glsS250n15LsWsYtCugiStS5A==
   dependencies:
     mime-db "^1.54.0"
 
@@ -5948,7 +5948,16 @@ strict-uri-encode@^2.0.0:
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
   integrity sha512-QwiXZgpRcKkhTj2Scnn++4PKtWsH0kpzZ62L2R6c/LUVYv7hVnZqcg2+sMuT6R7Jusu1vviK/MFsu6kNJfWlEQ==
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0:
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -6043,7 +6052,14 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
