@@ -11,7 +11,7 @@ export const LatestNFTList: React.FC = () => {
   useEffect(() => {
     const fetchNFTs = async () => {
       const items = await queryNftMinteds();
-      setNfts(items.map(mapNftMintedToNft));
+      setNfts(await Promise.all(items.map(mapNftMintedToNft)));
     };
 
     fetchNFTs();

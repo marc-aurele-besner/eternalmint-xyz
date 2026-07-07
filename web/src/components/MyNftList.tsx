@@ -13,7 +13,7 @@ export const MyNftList: React.FC = () => {
   useEffect(() => {
     const fetchNFTs = async () => {
       const items = await queryNftMinteds({ creator: address });
-      setNfts(items.map(mapNftMintedToNft));
+      setNfts(await Promise.all(items.map(mapNftMintedToNft)));
     };
 
     fetchNFTs();
