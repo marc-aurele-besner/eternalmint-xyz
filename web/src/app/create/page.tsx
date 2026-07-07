@@ -3,7 +3,7 @@ import { PageShell } from "@/components/PageShell";
 
 export default function CreatePage() {
   return (
-    <PageShell title="Create Eternal NFTs">
+    <PageShell>
       <CreateNFTForm />
     </PageShell>
   );
