@@ -28,15 +28,24 @@ export const Header: React.FC = () => {
 
   return (
     <header className="flex justify-between items-center mb-8">
-      <div className="flex items-center">
+      <Link
+        href={Routes.HOME}
+        aria-label="Eternal Mint — go to home"
+        className="flex items-center"
+      >
         <Image
           src="/images/EternalMint-LogoWithText.png"
-          alt="Eternal Mint - Logo with text"
+          alt="Eternal Mint — home"
           width={255}
           height={60}
+          sizes="255px"
+          priority
         />
-      </div>
-      <nav className="flex gap-6 items-center">
+      </Link>
+      <nav
+        aria-label="Primary"
+        className="flex gap-6 items-center"
+      >
         <Link href={Routes.HOME} className={activeOrHoverClass(Routes.HOME)}>
           Home
         </Link>

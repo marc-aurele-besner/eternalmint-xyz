@@ -15,6 +15,9 @@ interface PageShellProps {
  * Shared layout shell used by every page: top nav, optional title, content,
  * and footer. Renders the same `min-h-screen text-white` container plus the
  * standard `text-center mb-8` title block used by the browsable pages.
+ *
+ * Wraps the page body in a semantic `<main>` landmark for accessibility and
+ * SEO so assistive tech and crawlers can skip the nav / footer chrome.
  */
 export const PageShell: React.FC<PageShellProps> = ({
   title,
@@ -23,12 +26,14 @@ export const PageShell: React.FC<PageShellProps> = ({
 }) => (
   <div className={className}>
     <Header />
-    {title && (
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold">{title}</h1>
-      </div>
-    )}
-    {children}
+    <main id="main-content">
+      {title && (
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold">{title}</h1>
+        </div>
+      )}
+      {children}
+    </main>
     <Footer />
   </div>
 );

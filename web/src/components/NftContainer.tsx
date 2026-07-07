@@ -75,6 +75,7 @@ export const NftContainer: React.FC<NftContainerProps> = ({
               className="max-w-full max-h-full object-contain rounded-lg"
               width={640}
               height={256}
+              sizes="80px"
               {...imageSettings}
             />
             {isAnimated && (
@@ -90,7 +91,18 @@ export const NftContainer: React.FC<NftContainerProps> = ({
           </div>
         )}
         <div className="flex-1">
-          <h3 className="text-xl font-semibold">{nft.name}</h3>
+          <h3 className="text-xl font-semibold">
+            {nft.tokenId ? (
+              <Link
+                href={`/nft/${nft.tokenId}`}
+                className="hover:underline text-white"
+              >
+                {nft.name}
+              </Link>
+            ) : (
+              nft.name
+            )}
+          </h3>
           <p className="text-sm text-gray-400">{nft.description}</p>
           <p className="text-sm text-gray-400">Quantity: {nft.quantity}</p>
           {nft.quantity === 0 && (

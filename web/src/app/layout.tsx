@@ -1,5 +1,5 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import { Web3Provider } from "../providers/Web3Provider";
@@ -22,8 +22,14 @@ const manrope = Manrope({
   variable: "--font-manrope",
 });
 
+const SITE_URL = "https://eternalmint.xyz";
+
 export const metadata: Metadata = {
-  title: "Eternal Mint",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Eternal Mint",
+    template: "%s | Eternal Mint",
+  },
   description:
     "Mint Once, Own Forever: Fully Decentralized, Eternally Accessible NFTs.",
   keywords: [
@@ -37,12 +43,23 @@ export const metadata: Metadata = {
     "Permanent",
     "Autonomys",
   ],
+  applicationName: "Eternal Mint",
+  authors: [{ name: "Marc-Aurèle Besner", url: "https://eternalmint.xyz" }],
+  creator: "Marc-Aurèle Besner",
+  publisher: "Eternal Mint",
   openGraph: {
     title: "Eternal Mint",
     description:
       "Mint Once, Own Forever: Fully Decentralized, Eternally Accessible NFTs.",
-    images: ["/share.png"],
-    url: "https://eternalmint.xyz",
+    images: [
+      {
+        url: "/share.png",
+        width: 1200,
+        height: 630,
+        alt: "Eternal Mint — Decentralized NFT Minting",
+      },
+    ],
+    url: SITE_URL,
     siteName: "Eternal Mint",
     locale: "en_US",
     type: "website",
@@ -57,7 +74,7 @@ export const metadata: Metadata = {
     creator: "@marcaureleb",
   },
   alternates: {
-    canonical: "https://eternalmint.xyz",
+    canonical: SITE_URL,
   },
   robots: {
     index: true,
@@ -70,6 +87,63 @@ export const metadata: Metadata = {
       "max-snippet": -1, // no limit
     },
   },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/site.webmanifest",
+};
+
+// Next.js 14+ requires themeColor to live on a separate `viewport` export.
+export const viewport: Viewport = {
+  themeColor: "#0b0b0d",
+  colorScheme: "dark",
+};
+
+// Site-wide structured data. Surfaced to crawlers as a single JSON-LD block
+// so search engines can recognise Eternal Mint as a real-world dapp + org.
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Eternal Mint",
+      url: SITE_URL,
+      logo: `${SITE_URL}/images/EternalMint-LogoWithText.png`,
+      sameAs: [
+        "https://github.com/marc-aurele-besner/eternalmint-xyz",
+        "https://github.com/marc-aurele-besner",
+        "https://www.linkedin.com/in/marc-aurele-besner/",
+        "https://x.com/marcaureleb",
+        "https://x.com/eternalmint_xyz",
+      ],
+      founder: {
+        "@type": "Person",
+        name: "Marc-Aurèle Besner",
+        url: "https://github.com/marc-aurele-besner",
+      },
+    },
+    {
+      "@type": "WebApplication",
+      "@id": `${SITE_URL}/#app`,
+      name: "Eternal Mint",
+      url: SITE_URL,
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      description:
+        "Mint Once, Own Forever: Fully Decentralized, Eternally Accessible NFTs on Autonomys.",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      creator: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -82,6 +156,12 @@ export default function RootLayout({
       {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
       )}
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body
         className={`bg-custom-bg bg-no-repeat bg-cover ${geistSans.variable} ${geistMono.variable} ${manrope.variable} antialiased`}
       >

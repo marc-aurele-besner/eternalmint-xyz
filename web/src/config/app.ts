@@ -29,6 +29,10 @@ const getEnvironment = (): Environment => {
 
 export const ENV = getEnvironment();
 
+// Canonical site URL. Keep this in sync with `metadataBase` in `app/layout.tsx`
+// and the `alternates.canonical` URLs used by individual route metadata.
+export const SITE_URL = "https://eternalmint.xyz";
+
 // Auto-detect host URL for both client and server contexts
 export const getHostUrl = (req?: Request): string => {
   // If explicitly set, use that (only override we keep for host)
@@ -62,8 +66,8 @@ export const getHostUrl = (req?: Request): string => {
     return `https://${vercelUrl}`;
   }
 
-  // Fallback to known production URL
-  return "https://eternalmintpro.xyz";
+  // Fallback to the canonical production URL
+  return SITE_URL;
 };
 
 // EVM Network configurations (blockchain infrastructure only)
@@ -160,7 +164,7 @@ export const CURRENT_STORAGE_NETWORK =
 // Application configuration
 export const APP_CONFIG = {
   // Basic app info
-  name: "EternalMint Pro",
+  name: "Eternal Mint",
   description:
     "Mint Once, Own Forever: Fully Decentralized, Eternally Accessible NFTs.",
   version: "1.0.0",

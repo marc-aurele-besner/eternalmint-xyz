@@ -19,6 +19,20 @@ const NFT_MINTEDS_QUERY = `
   }
 `;
 
+const NFT_MINTED_BY_TOKEN_ID_QUERY = `
+  query NftMintedByTokenId($tokenId: BigInt!) {
+    nftMinteds(where: { tokenId: $tokenId }, first: 1) {
+      id
+      tokenId
+      creator
+      supply
+      cid
+      blockNumber
+      blockTimestamp
+    }
+  }
+`;
+
 export type QueryNftMintedsParams = {
   creator?: string;
   limit?: number;
@@ -62,6 +76,46 @@ export const queryNftMinteds = async ({
   }
 
   return payload.data?.nftMinteds ?? [];
+};
+
+/**
+ * Fetches a single NftMinted entity by its on-chain `tokenId`.
+ *
+ * Returns `null` when the subgraph has no record for the given tokenId. Throws
+ * on transport / HTTP errors so callers can show an error UI instead of an
+ * infinite spinner.
+ */
+export const queryNftMintedByTokenId = async (
+  tokenId: string,
+): Promise<NftMinted | null> => {
+  const endpoint = process.env.NEXT_PUBLIC_SUBGRAPH_API;
+  if (!endpoint) {
+    throw new Error("NEXT_PUBLIC_SUBGRAPH_API is not configured");
+  }
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: NFT_MINTED_BY_TOKEN_ID_QUERY,
+      variables: { tokenId },
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Subgraph request failed: ${res.status} ${res.statusText}`);
+  }
+
+  const payload = (await res.json()) as {
+    data?: { nftMinteds: NftMinted[] };
+    errors?: Array<{ message: string }>;
+  };
+
+  if (payload.errors?.length) {
+    throw new Error(payload.errors.map((e) => e.message).join("; "));
+  }
+
+  return payload.data?.nftMinteds?.[0] ?? null;
 };
 
 /**
@@ -111,5 +165,21 @@ export const mapNftMintedToNft = async (item: NftMinted): Promise<NFT> => {
     creator: item.creator,
     quantity: item.supply,
     cid: item.cid,
+    tokenId: String(item.tokenId),
   } satisfies NFT;
+};
+
+/**
+ * Fetches and maps a list of NftMinted entities to UI-facing NFTs.
+ *
+ * Resolves metadata in parallel; missing metadata falls back to per-NFT
+ * placeholders so a single failure cannot blank the list. An empty list is
+ * returned when the subgraph has no matching events (distinct from a thrown
+ * subgraph error).
+ */
+export const fetchAndMapNfts = async (
+  params: QueryNftMintedsParams = {},
+): Promise<NFT[]> => {
+  const items = await queryNftMinteds(params);
+  return Promise.all(items.map(mapNftMintedToNft));
 };
