@@ -13,7 +13,14 @@ export const MyNftList: React.FC = () => {
   useEffect(() => {
     const fetchNFTs = async () => {
       const items = await queryNftMinteds({ creator: address });
-      setNfts(await Promise.all(items.map(mapNftMintedToNft)));
+      setNfts(
+        await Promise.all(
+          items.map(async (item) => ({
+            ...(await mapNftMintedToNft(item)),
+            tokenId: String(item.tokenId),
+          })),
+        ),
+      );
     };
 
     fetchNFTs();
@@ -24,7 +31,7 @@ export const MyNftList: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4">My NFTs Created</h2>
       <ul className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {nfts.map((nft) => (
-          <NftContainer key={nft.id} nft={nft} />
+          <NftContainer key={nft.id} nft={nft} showTransferButton />
         ))}
       </ul>
     </div>
