@@ -111,5 +111,5 @@ export const mapNftMintedToNft = async (item: NftMinted): Promise<NFT> => {
     creator: item.creator,
     quantity: item.supply,
     cid: item.cid,
-  };
+  } satisfies NFT;
 };
