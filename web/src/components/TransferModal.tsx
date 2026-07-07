@@ -2,6 +2,7 @@
 
 import { APP_CONFIG } from "@/config/app";
 import { currentChain } from "@/config/chains";
+import { SAFE_TRANSFER_FROM_ABI } from "@/constants/contract";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { isAddress } from "viem";
@@ -24,22 +25,6 @@ interface TransferModalProps {
   };
   onQuantityUpdate?: (tokenId: string, newQuantity: number) => void;
 }
-
-const CONTRACT_ABI = [
-  {
-    inputs: [
-      { name: "from", type: "address" },
-      { name: "to", type: "address" },
-      { name: "id", type: "uint256" },
-      { name: "amount", type: "uint256" },
-      { name: "data", type: "bytes" },
-    ],
-    name: "safeTransferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-] as const;
 
 export const TransferModal: React.FC<TransferModalProps> = ({
   isOpen,
@@ -132,7 +117,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({
     try {
       writeContract({
         address: APP_CONFIG.contract.address as `0x${string}`,
-        abi: CONTRACT_ABI,
+        abi: SAFE_TRANSFER_FROM_ABI,
         functionName: "safeTransferFrom",
         args: [
           address,
