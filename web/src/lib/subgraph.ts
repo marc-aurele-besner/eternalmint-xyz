@@ -1,5 +1,5 @@
 import { request } from "graphql-request";
-import { NFT, NftMinted } from "@/types";
+import { NFT, Metadata, NftMinted } from "@/types";
 
 const NFT_MINTEDS_QUERY = `
   query NftMinteds($first: Int!, $creator: String) {
@@ -50,14 +50,51 @@ export const queryNftMinteds = async ({
 };
 
 /**
- * Maps a raw subgraph NftMinted entity to the UI-facing NFT shape.
+ * Fetches the on-chain metadata JSON for an NFT from the local CID proxy.
+ *
+ * The mint route writes metadata with `image` already pointing at this proxy
+ * (see `web/src/app/api/mint/route.ts`), so going through the same proxy keeps
+ * the returned `image` URL renderable as-is by `NftContainer`.
+ *
+ * Returns `null` when the env is missing, the response is not OK, or the body
+ * is not valid JSON — callers should fall back to placeholder fields.
  */
-export const mapNftMintedToNft = (item: NftMinted): NFT => ({
-  id: item.id,
-  image: `https://images.pexels.com/photos/${item.tokenId}/pexels-photo-${item.tokenId}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`,
-  name: `NFT ${item.tokenId}`,
-  description: `Created by ${item.creator}`,
-  creator: item.creator,
-  quantity: item.supply,
-  cid: item.cid,
-});
+export const fetchNftMetadata = async (
+  cid: string,
+): Promise<Partial<Metadata> | null> => {
+  const host = process.env.NEXT_PUBLIC_HOST;
+  const network = process.env.NEXT_PUBLIC_NETWORK;
+  if (!host || !network || !cid) return null;
+
+  try {
+    const res = await fetch(`${host}/api/cid/${network}/${cid}`);
+    if (!res.ok) return null;
+    const data = (await res.json()) as Partial<Metadata>;
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch NFT metadata", { cid, error });
+    return null;
+  }
+};
+
+/**
+ * Maps a raw subgraph NftMinted entity to the UI-facing NFT shape.
+ *
+ * Fetches the on-chain metadata JSON (written at mint time) and uses its
+ * `image`, `name`, and `description`. Falls back to per-field placeholders
+ * when metadata is unavailable so a single missing entry never blanks the
+ * whole list.
+ */
+export const mapNftMintedToNft = async (item: NftMinted): Promise<NFT> => {
+  const metadata = await fetchNftMetadata(item.cid);
+
+  return {
+    id: item.id,
+    image: metadata?.image ?? "",
+    name: metadata?.name ?? `NFT #${item.tokenId}`,
+    description: metadata?.description ?? `Created by ${item.creator}`,
+    creator: item.creator,
+    quantity: item.supply,
+    cid: item.cid,
+  };
+};
