@@ -292,7 +292,7 @@ export const CreateNFTForm: React.FC = () => {
           <p className="mt-4 text-green-500 text-sm">
             NFT minted successfully! Transaction Hash: {nftDetails?.txHash}{" "}
             <Link
-              href={`https://blockscout.taurus.autonomys.xyz/tx/${nftDetails?.txHash}`}
+              href={`${APP_CONFIG.evmNetwork.blockExplorer}/tx/${nftDetails?.txHash}`}
               className="text-blue-500 hover:underline"
               target="_blank"
             >
