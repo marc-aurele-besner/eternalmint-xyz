@@ -145,14 +145,7 @@ export const NftContainer: React.FC<NftContainerProps> = ({
         <TransferModal
           isOpen={isTransferModalOpen}
           onClose={() => setIsTransferModalOpen(false)}
-          nft={{
-            id: modalNft.id,
-            tokenId: modalNft.tokenId || "0",
-            name: modalNft.name || `NFT ${modalNft.id}`,
-            quantity: modalNft.quantity,
-            cid: modalNft.cid,
-            image: modalNft.image || "",
-          }}
+          nft={modalNft}
           onQuantityUpdate={handleQuantityUpdate}
         />
       )}

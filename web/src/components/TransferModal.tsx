@@ -3,8 +3,10 @@
 import { APP_CONFIG } from "@/config/app";
 import { currentChain } from "@/config/chains";
 import { SAFE_TRANSFER_FROM_ABI } from "@/constants/contract";
+import { NFT } from "@/types";
+import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { isAddress } from "viem";
 import {
   useAccount,
@@ -15,15 +17,81 @@ import {
 interface TransferModalProps {
   isOpen: boolean;
   onClose: () => void;
-  nft: {
-    id: string;
-    tokenId: string;
-    name: string;
-    quantity: number;
-    cid: string;
-    image?: string;
-  };
+  nft: NFT;
   onQuantityUpdate?: (tokenId: string, newQuantity: number) => void;
+}
+
+// Modal state machine. `status` drives the lifecycle:
+//   idle       — form is ready, no transfer in flight
+//   submitting — writeContract was called, awaiting receipt
+//   success    — receipt confirmed, form has been reset
+//
+// `pendingAmount` captures the amount of the in-flight transfer so the
+// success effect doesn't have to re-derive it from a closure or ref.
+type Status = "idle" | "submitting" | "success";
+
+type State = {
+  recipient: string;
+  amount: string;
+  quantity: number;
+  status: Status;
+  pendingAmount: number;
+  lastHash?: `0x${string}`;
+};
+
+type Action =
+  | { type: "set_recipient"; value: string }
+  | { type: "set_amount"; value: string }
+  | { type: "submit"; amount: number }
+  | { type: "success"; hash: `0x${string}`; amount: number }
+  | { type: "error" }
+  | { type: "resync"; quantity: number }
+  | { type: "reset" };
+
+const fresh = (quantity: number): State => ({
+  recipient: "",
+  amount: "1",
+  quantity,
+  status: "idle",
+  pendingAmount: 0,
+});
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "set_recipient":
+      return { ...state, recipient: action.value };
+    case "set_amount":
+      return { ...state, amount: action.value };
+    case "submit":
+      return { ...state, status: "submitting", pendingAmount: action.amount };
+    case "success":
+      // Guard against double-processing: only commit if we were actually
+      // submitting. A stale `isSuccess` from a previous transfer cannot
+      // decrement the quantity a second time.
+      if (state.status !== "submitting") return state;
+      return {
+        ...state,
+        quantity: Math.max(0, state.quantity - action.amount),
+        status: "success",
+        lastHash: action.hash,
+        pendingAmount: 0,
+        recipient: "",
+        amount: "1",
+      };
+    case "error":
+      // Rejected signature or contract revert: drop back to idle so the
+      // user can retry without the form being stuck.
+      if (state.status !== "submitting") return state;
+      return { ...state, status: "idle", pendingAmount: 0 };
+    case "resync":
+      // Don't clobber an in-flight or just-completed transfer. The parent
+      // echo of our own onQuantityUpdate will arrive here, and we want the
+      // success banner / reset form to stay visible.
+      if (state.status !== "idle") return state;
+      return fresh(action.quantity);
+    case "reset":
+      return fresh(state.quantity);
+  }
 }
 
 export const TransferModal: React.FC<TransferModalProps> = ({
@@ -33,87 +101,68 @@ export const TransferModal: React.FC<TransferModalProps> = ({
   onQuantityUpdate,
 }) => {
   const { address } = useAccount();
-  const [recipient, setRecipient] = useState("");
-  const [amountInput, setAmountInput] = useState("1");
-  const [isValidAddress, setIsValidAddress] = useState(false);
-  const [currentQuantity, setCurrentQuantity] = useState(nft.quantity);
-  const transferredAmountRef = useRef(0);
-  const initialQuantityRef = useRef(nft.quantity);
-  const hasProcessedSuccessRef = useRef(false);
-  const lastTransferredAmountRef = useRef(0);
+  const queryClient = useQueryClient();
+  const [state, dispatch] = useReducer(reducer, nft.quantity, fresh);
 
   const { data: hash, writeContract, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
 
-  // Get the numeric amount for validation and transfer
-  const amount = parseInt(amountInput) || 0;
+  const amount = parseInt(state.amount) || 0;
+  const isValidAddress = isAddress(state.recipient);
+  const isBusy = isPending || isConfirming;
 
-  // Update current quantity when nft prop changes
+  // Pick up quantity changes from the parent (e.g., a background re-fetch).
   useEffect(() => {
-    setCurrentQuantity(nft.quantity);
-    transferredAmountRef.current = 0;
-    initialQuantityRef.current = nft.quantity;
-    hasProcessedSuccessRef.current = false;
-    lastTransferredAmountRef.current = 0;
+    dispatch({ type: "resync", quantity: nft.quantity });
   }, [nft.quantity]);
 
-  // Handle successful transfer
+  // Commit a confirmed transfer: decrement quantity, notify the parent,
+  // and invalidate any React Query caches keyed on the NFT list. The
+  // reducer's status guard makes this effect safe to re-run.
   useEffect(() => {
-    if (isSuccess && !hasProcessedSuccessRef.current) {
-      hasProcessedSuccessRef.current = true;
-      // Use the amount that was actually transferred (stored in ref)
-      const transferredAmount = lastTransferredAmountRef.current;
-      // Add to total transferred amount
-      transferredAmountRef.current += transferredAmount;
-      // Update current quantity based on initial quantity
-      const newQuantity =
-        initialQuantityRef.current - transferredAmountRef.current;
-      setCurrentQuantity(newQuantity);
-      // Update parent component immediately
-      if (onQuantityUpdate) {
-        onQuantityUpdate(nft.tokenId, newQuantity);
-      }
-      // Reset form fields but keep modal open
-      setRecipient("");
-      setAmountInput("1");
-      setIsValidAddress(false);
+    if (!isSuccess || !hash || state.status !== "submitting") return;
+    const transferredAmount = state.pendingAmount;
+    dispatch({ type: "success", hash, amount: transferredAmount });
+    if (onQuantityUpdate && nft.tokenId) {
+      onQuantityUpdate(
+        nft.tokenId,
+        Math.max(0, state.quantity - transferredAmount),
+      );
     }
-  }, [isSuccess, onQuantityUpdate, nft.tokenId]);
+    // Forward-compatible: if/when the parent switches to useQuery, this
+    // refetches the NFT list. Harmless if no query is registered.
+    queryClient.invalidateQueries({ queryKey: ["nftMinteds"] });
+  }, [
+    isSuccess,
+    hash,
+    state.status,
+    state.pendingAmount,
+    state.quantity,
+    onQuantityUpdate,
+    nft.tokenId,
+    queryClient,
+  ]);
 
-  // Reset form fields
-  const resetForm = () => {
-    setRecipient("");
-    setAmountInput("1");
-    setIsValidAddress(false);
-  };
-
-  // Validate Ethereum address (checksum-aware, viem)
-  const validateAddress = (address: string) => isAddress(address);
-
-  const handleRecipientChange = (value: string) => {
-    setRecipient(value);
-    setIsValidAddress(validateAddress(value));
-  };
+  // Reset to idle if writeContract produced an error (e.g., user rejected
+  // the signature) so the form becomes interactive again.
+  useEffect(() => {
+    if (state.status === "submitting" && error && !isSuccess) {
+      dispatch({ type: "error" });
+    }
+  }, [error, isSuccess, state.status]);
 
   const handleAmountBlur = () => {
-    // Validate on blur
     if (isNaN(amount) || amount < 1) {
-      setAmountInput("1");
-    } else if (amount > currentQuantity) {
-      setAmountInput(currentQuantity.toString());
+      dispatch({ type: "set_amount", value: "1" });
+    } else if (amount > state.quantity) {
+      dispatch({ type: "set_amount", value: state.quantity.toString() });
     }
   };
 
-  const handleTransfer = async () => {
-    if (!address || !isValidAddress) {
-      return;
-    }
-
-    // Store the amount that will be transferred
-    lastTransferredAmountRef.current = amount;
-
+  const handleTransfer = () => {
+    if (!address || !isValidAddress || !nft.tokenId) return;
     try {
       writeContract({
         address: APP_CONFIG.contract.address as `0x${string}`,
@@ -121,27 +170,32 @@ export const TransferModal: React.FC<TransferModalProps> = ({
         functionName: "safeTransferFrom",
         args: [
           address,
-          recipient as `0x${string}`,
+          state.recipient as `0x${string}`,
           BigInt(nft.tokenId),
           BigInt(amount),
-          "0x", // empty data
+          "0x",
         ],
         chain: currentChain,
       });
-    } catch (error) {
-      console.error("Transfer error:", error);
+      dispatch({ type: "submit", amount });
+    } catch (err) {
+      console.error("Transfer error:", err);
     }
   };
 
   const handleClose = () => {
-    if (!isPending && !isConfirming) {
-      // Update parent component with final quantity if there were transfers
-      if (transferredAmountRef.current > 0 && onQuantityUpdate) {
-        onQuantityUpdate(nft.tokenId, currentQuantity);
-      }
-      resetForm();
-      onClose();
+    if (isBusy) return;
+    // Make sure the parent has the final quantity if the user made
+    // transfers and the success callback already fired.
+    if (
+      onQuantityUpdate &&
+      nft.tokenId &&
+      state.quantity !== nft.quantity
+    ) {
+      onQuantityUpdate(nft.tokenId, state.quantity);
     }
+    dispatch({ type: "reset" });
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -153,7 +207,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({
           <h2 className="text-xl font-bold text-white">Transfer NFT</h2>
           <button
             onClick={handleClose}
-            disabled={isPending || isConfirming}
+            disabled={isBusy}
             className="text-gray-400 hover:text-white disabled:opacity-50"
           >
             ✕
@@ -161,7 +215,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({
         </div>
 
         <div className="space-y-4">
-          {currentQuantity === 0 && (
+          {state.quantity === 0 && (
             <div className="bg-yellow-500/20 border border-yellow-500/50 rounded-lg p-3">
               <p className="text-yellow-300 text-sm">
                 This NFT has no available tokens for transfer. You can still
@@ -190,11 +244,11 @@ export const TransferModal: React.FC<TransferModalProps> = ({
                   </p>
                   <p
                     className={`text-sm ${
-                      currentQuantity === 0 ? "text-red-400" : "text-gray-400"
+                      state.quantity === 0 ? "text-red-400" : "text-gray-400"
                     }`}
                   >
-                    Available: {currentQuantity}
-                    {currentQuantity === 0 && " (No tokens available)"}
+                    Available: {state.quantity}
+                    {state.quantity === 0 && " (No tokens available)"}
                   </p>
                 </div>
               </div>
@@ -207,19 +261,21 @@ export const TransferModal: React.FC<TransferModalProps> = ({
             </label>
             <input
               type="text"
-              value={recipient}
-              onChange={(e) => handleRecipientChange(e.target.value)}
+              value={state.recipient}
+              onChange={(e) =>
+                dispatch({ type: "set_recipient", value: e.target.value })
+              }
               placeholder="0x..."
               className={`w-full p-3 rounded-lg bg-gray-800 border font-mono text-sm ${
-                recipient && !isValidAddress
+                state.recipient && !isValidAddress
                   ? "border-red-500"
                   : isValidAddress
                   ? "border-green-500"
                   : "border-gray-600"
               } text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              disabled={isPending || isConfirming || currentQuantity === 0}
+              disabled={isBusy || state.quantity === 0}
             />
-            {recipient && !isValidAddress && (
+            {state.recipient && !isValidAddress && (
               <p className="text-red-400 text-sm mt-1">
                 Invalid Ethereum address
               </p>
@@ -233,16 +289,18 @@ export const TransferModal: React.FC<TransferModalProps> = ({
             <input
               type="number"
               min="1"
-              max={currentQuantity}
-              value={amountInput}
-              onChange={(e) => setAmountInput(e.target.value)}
+              max={state.quantity}
+              value={state.amount}
+              onChange={(e) =>
+                dispatch({ type: "set_amount", value: e.target.value })
+              }
               onBlur={handleAmountBlur}
               className="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              disabled={isPending || isConfirming || currentQuantity === 0}
+              disabled={isBusy || state.quantity === 0}
             />
             <p className="text-gray-400 text-sm mt-1">
-              Max: {currentQuantity}
-              {currentQuantity === 0 && (
+              Max: {state.quantity}
+              {state.quantity === 0 && (
                 <span className="text-red-400 ml-2">(No tokens available)</span>
               )}
             </p>
@@ -256,12 +314,12 @@ export const TransferModal: React.FC<TransferModalProps> = ({
             </div>
           )}
 
-          {isSuccess && (
+          {state.status === "success" && state.lastHash && (
             <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-3">
               <p className="text-green-300 text-sm">
                 Transfer successful!{" "}
                 <a
-                  href={`${currentChain.blockExplorers?.default.url}/tx/${hash}`}
+                  href={`${currentChain.blockExplorers?.default.url}/tx/${state.lastHash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-400 hover:text-blue-300 underline"
@@ -275,25 +333,24 @@ export const TransferModal: React.FC<TransferModalProps> = ({
           <div className="flex gap-3 pt-4">
             <button
               onClick={handleClose}
-              disabled={isPending || isConfirming}
+              disabled={isBusy}
               className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
             >
-              {isSuccess ? "Close" : "Cancel"}
+              {state.status === "success" ? "Close" : "Cancel"}
             </button>
             <button
               onClick={handleTransfer}
               disabled={
                 !isValidAddress ||
-                isPending ||
-                isConfirming ||
+                isBusy ||
                 amount < 1 ||
-                currentQuantity === 0
+                state.quantity === 0
               }
               className="flex-1 px-4 py-2 bg-gradient-to-r from-[#1E58FC] via-[#D914E4] to-[#F10419] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-opacity"
             >
-              {currentQuantity === 0
+              {state.quantity === 0
                 ? "No Tokens Available"
-                : isPending || isConfirming
+                : isBusy
                 ? "Transferring..."
                 : "Transfer"}
             </button>
