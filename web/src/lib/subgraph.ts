@@ -1,4 +1,3 @@
-import { request } from "graphql-request";
 import { NFT, Metadata, NftMinted } from "@/types";
 
 const NFT_MINTEDS_QUERY = `
@@ -28,8 +27,8 @@ export type QueryNftMintedsParams = {
 /**
  * Fetches the most recent NftMinted events from the configured subgraph.
  *
- * Throws on transport or HTTP errors so callers can decide their own UX.
- * Returns an empty array when the subgraph responds with no data.
+ * Throws on transport, HTTP, or GraphQL `errors` so callers can decide their
+ * own UX. Returns an empty array when the subgraph responds with no data.
  */
 export const queryNftMinteds = async ({
   creator,
@@ -40,13 +39,29 @@ export const queryNftMinteds = async ({
     throw new Error("NEXT_PUBLIC_SUBGRAPH_API is not configured");
   }
 
-  const data = await request<{ nftMinteds: NftMinted[] }>(
-    endpoint,
-    NFT_MINTEDS_QUERY,
-    { first: limit, creator: creator ?? null },
-  );
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: NFT_MINTEDS_QUERY,
+      variables: { first: limit, creator: creator ?? null },
+    }),
+  });
 
-  return data?.nftMinteds ?? [];
+  if (!res.ok) {
+    throw new Error(`Subgraph request failed: ${res.status} ${res.statusText}`);
+  }
+
+  const payload = (await res.json()) as {
+    data?: { nftMinteds: NftMinted[] };
+    errors?: Array<{ message: string }>;
+  };
+
+  if (payload.errors?.length) {
+    throw new Error(payload.errors.map((e) => e.message).join("; "));
+  }
+
+  return payload.data?.nftMinteds ?? [];
 };
 
 /**
