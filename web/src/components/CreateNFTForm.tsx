@@ -8,6 +8,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useAccount } from "wagmi";
 
+import {
+  APP_CONFIG,
+  getImageSizeErrorMessage,
+  getImageTypeErrorMessage,
+} from "@/config/app";
+
 interface FormData {
   name: string;
   supply: number;
@@ -52,9 +58,9 @@ export const CreateNFTForm: React.FC = () => {
       if (rejectedFiles.length > 0) {
         const error = rejectedFiles[0].errors[0];
         if (error.code === "file-too-large") {
-          setFileError("File is larger than 5MB.");
+          setFileError(getImageSizeErrorMessage());
         } else if (error.code === "file-invalid-type") {
-          setFileError("Only image files are accepted.");
+          setFileError(getImageTypeErrorMessage());
         } else {
           setFileError("File not accepted.");
         }
@@ -71,14 +77,11 @@ export const CreateNFTForm: React.FC = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: {
-      "image/jpeg": [],
-      "image/png": [],
-      "image/gif": [],
-      "image/webp": [],
-    },
-    maxSize:
-      parseInt(process.env.NEXT_PUBLIC_MAX_IMAGE_SIZE || "5") * 1024 * 1024, // 5MB
+    accept: APP_CONFIG.storage.supportedImageTypes.reduce(
+      (acc, type) => ({ ...acc, [type]: [] }),
+      {} as Record<string, string[]>
+    ),
+    maxSize: APP_CONFIG.storage.maxImageSizeMB * 1024 * 1024,
   });
 
   const handleChange = useCallback(
