@@ -4,6 +4,7 @@ import { APP_CONFIG } from "@/config/app";
 import { currentChain } from "@/config/chains";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { isAddress } from "viem";
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -103,11 +104,8 @@ export const TransferModal: React.FC<TransferModalProps> = ({
     setIsValidAddress(false);
   };
 
-  // Validate Ethereum address
-  const validateAddress = (address: string) => {
-    const ethAddressRegex = /^0x[a-fA-F0-9]{40}$/;
-    return ethAddressRegex.test(address);
-  };
+  // Validate Ethereum address (checksum-aware, viem)
+  const validateAddress = (address: string) => isAddress(address);
 
   const handleRecipientChange = (value: string) => {
     setRecipient(value);
