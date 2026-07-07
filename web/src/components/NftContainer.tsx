@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { NFT } from "../types";
+import { truncateCid } from "../utils/format";
 import { TransferModal } from "./TransferModal";
 
 interface NftContainerProps {
@@ -98,14 +99,14 @@ export const NftContainer: React.FC<NftContainerProps> = ({
           <p className="text-sm text-gray-400 break-all">
             Metadata:{" "}
             <Link href={getGatewayUrl(nft.cid)} target="_blank">
-              {nft.cid.slice(0, 6)}...{nft.cid.slice(-6)}
+              {truncateCid(nft.cid)}
             </Link>
           </p>
           {imageCid && (
             <p className="text-sm text-gray-400 break-all">
               Image:{" "}
               <Link href={getGatewayUrl(imageCid)} target="_blank">
-                {imageCid.slice(0, 6)}...{imageCid.slice(-6)}
+                {truncateCid(imageCid)}
               </Link>
             </p>
           )}
