@@ -5,6 +5,7 @@ import {
   isValidImageSize,
   isValidImageType,
 } from "@/config/app";
+import { MINT_ABI } from "@/constants/contract";
 import { createAutoDriveApi } from "@autonomys/auto-drive";
 import { NetworkId } from '@autonomys/auto-utils';
 import { Contract, JsonRpcProvider, Wallet } from "ethers";
@@ -132,19 +133,7 @@ export const POST = async (req: NextRequest) => {
     const wallet = new Wallet(process.env.PRIVATE_KEY, provider);
     const contract = new Contract(
       process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-      [
-        {
-          type: "function",
-          name: "mint",
-          inputs: [
-            { name: "creator", type: "address", internalType: "address" },
-            { name: "cid", type: "string", internalType: "string" },
-            { name: "supply", type: "uint256", internalType: "uint256" },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-      ],
+      MINT_ABI,
       wallet
     );
     const tx = await contract.mint(creator, cid, supply);
