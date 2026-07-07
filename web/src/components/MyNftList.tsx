@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { NFT, NftMinted } from "../types";
+import { NFT } from "../types";
+import { mapNftMintedToNft, queryNftMinteds } from "../lib/subgraph";
 import { NftContainer } from "./NftContainer";
 
 export const MyNftList: React.FC = () => {
@@ -11,43 +12,8 @@ export const MyNftList: React.FC = () => {
 
   useEffect(() => {
     const fetchNFTs = async () => {
-      const response = await fetch(process.env.NEXT_PUBLIC_SUBGRAPH_API!, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-            query {
-              nftMinteds(first: 10, orderBy: blockTimestamp, orderDirection: desc, where: {creator: "${address}"}) {
-                id
-                tokenId
-                creator
-                supply
-                cid
-                blockNumber
-                blockTimestamp
-              }
-            }
-          `,
-        }),
-      });
-      const { data } = await response.json();
-      console.log("data", data);
-      if (!data || !data.nftMinteds || data.nftMinteds.length === 0) {
-        setNfts([]);
-        return;
-      }
-      const transformedNfts = data.nftMinteds.map((item: NftMinted) => ({
-        id: item.id,
-        image: `https://images.pexels.com/photos/${item.tokenId}/pexels-photo-${item.tokenId}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`,
-        name: `NFT ${item.tokenId}`,
-        description: `Created by ${item.creator}`,
-        quantity: item.supply,
-        creator: item.creator,
-        cid: item.cid,
-      }));
-      setNfts(transformedNfts);
+      const items = await queryNftMinteds({ creator: address });
+      setNfts(items.map(mapNftMintedToNft));
     };
 
     fetchNFTs();
