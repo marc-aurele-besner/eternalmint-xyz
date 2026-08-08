@@ -1,6 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --background-image-custom-bg: url("/images/Background.png");
+}
+
+@utility font-manrope {
+  font-family: var(--font-manrope), sans-serif;
+}
 
 :root {
   --background: #0b0b0d;
@@ -20,8 +26,6 @@ body {
   font-family: "Inter", Arial, Helvetica, sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@utility text-balance {
+  text-wrap: balance;
 }
