@@ -23,7 +23,7 @@
     "react-dropzone": "^14.2.10",
     "react-icons": "^5.3.0",
     "viem": "^2.21.30",
-    "wagmi": "^2.12.20",
+    "wagmi": "^3.0.0",
     "zlibjs": "^0.3.1"
   },
   "devDependencies": {
