@@ -4424,9 +4424,9 @@ react-dom@^19.2.3:
     scheduler "^0.27.0"
 
 react-dropzone@^20.0.0:
-  version "20.0.0"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-20.0.0.tgz#75eade48bede945796aac3a25cba5488d5d640a9"
-  integrity sha512-Xw8tvvVPJQzj8ir5wivUMzA+G6R+aGhdU5KQzUMvVBlJNb26AW/0137VoYVmb5UgZcbhM9OCpjE4KOqqSL9QuQ==
+  version "20.1.0"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-20.1.0.tgz#16453ee120ea19d111d76015e58b89c2ddbd7c3b"
+  integrity sha512-id1t9JDYNQeFzzIfB5/C6TrpLchy29rTSDxsBH/pcxhILyv/6bSOTJwOlvUsTWXkC2GduuHIldDV6UQXNWfIuA==
   dependencies:
     attr-accept "^2.2.5"
     file-selector "^4.1.0"
