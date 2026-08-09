@@ -17,25 +17,25 @@
     "ethers": "^6.13.4",
     "graphql": "^17.0.0",
     "next": "^16.1.1",
-    "pino-pretty": "^11.3.0",
+    "pino-pretty": "^13.0.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-dropzone": "^14.2.10",
     "react-icons": "^5.3.0",
     "viem": "^2.21.30",
-    "wagmi": "^2.12.20",
+    "wagmi": "^3.0.0",
     "zlibjs": "^0.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
-    "@types/node": "^20",
+    "@types/node": "^24.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "^10.0.0",
     "eslint-config-next": "^16.1.1",
     "postcss": "^8",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5"
+    "typescript": "^7.0.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
