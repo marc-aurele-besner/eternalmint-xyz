@@ -26,6 +26,9 @@
     "wagmi": "^2.12.20",
     "zlibjs": "^0.3.1"
   },
+  "engines": {
+    "node": "24.x"
+  },
   "devDependencies": {
     "@types/node": "^24.0.0",
     "@types/react": "^19",
