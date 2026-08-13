@@ -5239,9 +5239,9 @@ util-deprecate@~1.0.1:
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
 viem@^2.21.30:
-  version "2.55.13"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.55.13.tgz#2a3c139ad66671dabde492ce2f3e7437ed15e4b7"
-  integrity sha512-Rt1NAsdtTdvJgqaCxsv2TuO55xv2d2dKEuRuzrg34xMGxvTSFOX0iIFvEfymPvh+fwN2tbgEU2JwN0YHOVM+Bg==
+  version "2.55.15"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.55.15.tgz#ead9b270f7fad0bdaf183853acd5d55f2c9081ac"
+  integrity sha512-ka9SfSJ3ZfhuUEzTGmufwALRvEPVKM068tF0AwfdRZagqA3yuFa/QoXIvALzr9y47m4Wiisl3yEoYWuFQso6Ng==
   dependencies:
     "@noble/curves" "1.9.1"
     "@noble/hashes" "1.8.0"
