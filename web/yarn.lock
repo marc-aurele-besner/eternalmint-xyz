@@ -2088,10 +2088,10 @@ atomic-sleep@^1.0.0:
   resolved "https://registry.yarnpkg.com/atomic-sleep/-/atomic-sleep-1.0.0.tgz#eb85b77a601fc932cfe432c5acd364a9e2c9075b"
   integrity sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==
 
-attr-accept@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-2.2.5.tgz#d7061d958e6d4f97bf8665c68b75851a0713ab5e"
-  integrity sha512-0bDNnY/u6pPwHDMoF0FieU354oBi0a8rD9FcsLwzcGWbc8KS8KPIi7y+s13OlVY+gMWc/9xEMUgNE6Qm8ZllYQ==
+attr-accept@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-4.0.0.tgz#e038002c875830b2b98774918abfd4bdeb7d9c97"
+  integrity sha512-hmCnJClmeKNKlsBHgbM8yLZRiQZ4/20UXbLJb6OUT16eWcM5/xNZerr80a/zCYob768KIGq++aLrQNTuwPsIOQ==
 
 available-typed-arrays@^1.0.7:
   version "1.0.7"
@@ -2957,10 +2957,10 @@ file-entry-cache@^8.0.0:
   dependencies:
     flat-cache "^4.0.0"
 
-file-selector@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-4.1.0.tgz#8759e5b0ef030c5cee36ea6f4b66cd9b23a40d86"
-  integrity sha512-Io1mP8CI3zec5Bxy3P3TxdrKnt35Cm8vNIHnZsvyj43l4YFjD4NRInBp240S5bDJQ0EP1jnh7nCAwXsO818OCg==
+file-selector@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-5.0.1.tgz#9a8f7a944559efe4115bef40df885ac2092b0651"
+  integrity sha512-v0g/PTeuQgvKCBrVRsfVudvwXlRHSWHEQkVgKawgCGHkEpKA1clp3Om5jvEVhz8G9W/mOYjJH9FhkH4C888PgQ==
 
 fill-range@^7.1.1:
   version "7.1.1"
@@ -4424,12 +4424,12 @@ react-dom@^19.2.3:
     scheduler "^0.27.0"
 
 react-dropzone@^20.0.0:
-  version "20.1.0"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-20.1.0.tgz#16453ee120ea19d111d76015e58b89c2ddbd7c3b"
-  integrity sha512-id1t9JDYNQeFzzIfB5/C6TrpLchy29rTSDxsBH/pcxhILyv/6bSOTJwOlvUsTWXkC2GduuHIldDV6UQXNWfIuA==
+  version "20.1.1"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-20.1.1.tgz#8ec530ea9421ca006ef6df986635adeb69e93ed4"
+  integrity sha512-2cilRFP8bsjDOHpV0sJ6XY8pzJhmz4/cQ6s9yeckOACWYDR+n4MGGtnJh3Rycq/9SLhDWugqDx1z5mtfmOOZhw==
   dependencies:
-    attr-accept "^2.2.5"
-    file-selector "^4.1.0"
+    attr-accept "^4.0.0"
+    file-selector "^5.0.0"
 
 react-icons@^5.3.0:
   version "5.7.0"
