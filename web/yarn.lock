@@ -1887,15 +1887,15 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/sprinkles/-/sprinkles-1.6.5.tgz#71f8cf21ca47cf75b2fc74e63c1854a8ef4e4a82"
   integrity sha512-HOYidLONR/SeGk8NBAeI64I4gYdsMX9vJmniL13ZcLVwawyK0s2GUENEAcGA+GYLIoeyQB61UqmhqPodJry7zA==
 
-"@wagmi/connectors@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@wagmi/connectors/-/connectors-8.1.0.tgz#695c9daa827efb823ce44dc631fe74b99d615385"
-  integrity sha512-ASlHXq9NC4pp617lalZdlPuPnZUhFeWNEKQfm3ngVSQKd4S2is5XXG4v3EOAhcxdLjSk1AMfGXlHgk5tX2WCZg==
+"@wagmi/connectors@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@wagmi/connectors/-/connectors-8.2.0.tgz#cba31bac2d519ac295c71eb1278205cb80d5aaf9"
+  integrity sha512-hPwdmePYjQqSWlw9JmzrzVgmw2PJ+NJsUQ/BuPBYbzBS8+cW5vWdqiaKLB4qTF9m+yr+zSp7u91KBgvOWz50og==
 
-"@wagmi/core@3.6.4":
-  version "3.6.4"
-  resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-3.6.4.tgz#ed9436a367c843898f2eb8c76c6f3e3dd9f1cc33"
-  integrity sha512-YERJ+vbFZw3UI6p4KoFU5DkxkqmtzBq5lddpgVAvcu5Tz7kSicKVA3DMCWvjVAFsikNdZYIs39FIkMGWfzpSMQ==
+"@wagmi/core@3.6.5":
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-3.6.5.tgz#a15edf15aec4ee70db9c75205de3b22cc71dc2e9"
+  integrity sha512-zfKvLNT1V1+/RgrrUcRvteKx+V+Iv9ZHPWseIVKFA9mX5WE0H8J6zWZGWXSQCKbz5xGSUoatNFCkNFSzqQp+AA==
   dependencies:
     eventemitter3 "5.0.1"
     mipd "0.0.7"
@@ -5253,12 +5253,12 @@ viem@^2.21.30:
     ws "8.21.0"
 
 wagmi@^3.0.0:
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-3.7.6.tgz#da2810b86b241522f3bc22534c5666abf7348509"
-  integrity sha512-Zm/ppGHV6GYX9by3ERs1KVcNqpMZ4Vdno48Avdz9U+3QCjC5iFatOwruA9IMOl8poL7n/pJGQOcR1xj8N5c69w==
+  version "3.7.7"
+  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-3.7.7.tgz#80d0f478dc3f153685b37d0a3b1dd4c90dace456"
+  integrity sha512-J9YTRKwOVt+L135nMiitwGALrJqpXFhLX8AZzbECWeAQ1aI9Uz8Pz0GGMqtbKe7xJtmOx838OChT7YkMs9k8OA==
   dependencies:
-    "@wagmi/connectors" "8.1.0"
-    "@wagmi/core" "3.6.4"
+    "@wagmi/connectors" "8.2.0"
+    "@wagmi/core" "3.6.5"
     use-sync-external-store "1.4.0"
 
 weald@^1.0.4:
