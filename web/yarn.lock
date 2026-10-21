@@ -12,19 +12,19 @@
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@autonomys/asynchronous@^1.6.15":
-  version "1.6.15"
-  resolved "https://registry.yarnpkg.com/@autonomys/asynchronous/-/asynchronous-1.6.15.tgz#1626d1d9d588d54b262e145fe5b2eaf8ec149fc0"
-  integrity sha512-WISiiFHlj3owtnXTtAE66hxppDviX3WDlmf+PH4THB2liKu8LFXwWd8YEozy+TS4R58B6SX2UOhFeKXqDpGkFg==
+"@autonomys/asynchronous@^1.6.16":
+  version "1.6.16"
+  resolved "https://registry.yarnpkg.com/@autonomys/asynchronous/-/asynchronous-1.6.16.tgz#af2e5e081a9c57bbc6889aeb02cd73f64dd78343"
+  integrity sha512-HR5CKGK+iuA3WatCwNJoX2NonwVLXsogXm7DHIk4D1pzzqBz+GvsCjhwGQm5k8uH161ouu7jADZDihW7KBMm6Q==
   dependencies:
     stream-fork "^1.0.5"
 
-"@autonomys/auto-dag-data@^1.6.15":
-  version "1.6.15"
-  resolved "https://registry.yarnpkg.com/@autonomys/auto-dag-data/-/auto-dag-data-1.6.15.tgz#074ff14b362f494a77f5d0083370557522a8bf0e"
-  integrity sha512-2WoF8WS+Ap5+NzSvqcHl3S/VW/jSkoxssMP1aUe4XJj72RGWCrDMt4AKeL6a9ITFIoNpJ8WDiHzdnGpcruL2lA==
+"@autonomys/auto-dag-data@^1.6.16":
+  version "1.6.16"
+  resolved "https://registry.yarnpkg.com/@autonomys/auto-dag-data/-/auto-dag-data-1.6.16.tgz#a6636a78733bcf6be04b756f07a66f4a6e852e44"
+  integrity sha512-PKg4HqYutd3c1yz+6em7LrUsuY20DlgxX0z8u3stqLdGC9M7jbE507jzlA9CI8j3a2hRbA7Y7Dwtwjj5yI+pMQ==
   dependencies:
-    "@autonomys/asynchronous" "^1.6.15"
+    "@autonomys/asynchronous" "^1.6.16"
     "@ipld/dag-pb" "^4.1.7"
     "@webbuf/blake3" "^3.8.0"
     "@webbuf/fixedbuf" "^3.8.0"
@@ -36,13 +36,13 @@
     protons-runtime "^5.6.0"
 
 "@autonomys/auto-drive@^1.6.5":
-  version "1.6.15"
-  resolved "https://registry.yarnpkg.com/@autonomys/auto-drive/-/auto-drive-1.6.15.tgz#69bcd8520bd175a4d4c0cf44e8e268fe9f95338f"
-  integrity sha512-4FUVBucBV8d9/g9yQ/uWHHZ76WyhDCQW/f8T+37G4pJHoudquVQyBetXp+BtbXxL5IzJCLLhEtCUQutXfBU2fQ==
+  version "1.6.16"
+  resolved "https://registry.yarnpkg.com/@autonomys/auto-drive/-/auto-drive-1.6.16.tgz#2f9aad3a70fc99e1f3a21f226f8a7c5271c3076a"
+  integrity sha512-vwPQXjOdZasFRhaqhU1wW/61PIZX3x684aTY73zrKtqAhzXzdo9C43KhNWvMihXsLwz4AOGFGiaSFPDH7pw4Lw==
   dependencies:
-    "@autonomys/asynchronous" "^1.6.15"
-    "@autonomys/auto-dag-data" "^1.6.15"
-    "@autonomys/auto-utils" "^1.6.15"
+    "@autonomys/asynchronous" "^1.6.16"
+    "@autonomys/auto-dag-data" "^1.6.16"
+    "@autonomys/auto-utils" "^1.6.16"
     blockstore-core "^5.0.4"
     jszip "^3.10.1"
     mime-types "^3.0.2"
@@ -50,10 +50,10 @@
     stream "^0.0.3"
     zod "^3.25.76"
 
-"@autonomys/auto-utils@^1.6.15":
-  version "1.6.15"
-  resolved "https://registry.yarnpkg.com/@autonomys/auto-utils/-/auto-utils-1.6.15.tgz#7be8b9a28e2111352b147021687f8a1758e9d6b3"
-  integrity sha512-rodYfGWsooR6jzlXCdKNKw7kL2lwsfQe2iKYp3ueZOpuR5ydhj3Mn2D04jrfyNLHnRqqo8blrSv8fp3Mg+w5wQ==
+"@autonomys/auto-utils@^1.6.16":
+  version "1.6.16"
+  resolved "https://registry.yarnpkg.com/@autonomys/auto-utils/-/auto-utils-1.6.16.tgz#57f62d68a97f27c7e8851e268f8f7a1b5e6d58d5"
+  integrity sha512-6FnBbWQgQoGM+sYGl4pkhmS9AChzp0SWE3+J/AIOQehWrBVesUhtMt1Ix9HUhlHx+XlTuCZGsr4tjekNfz3Vhw==
   dependencies:
     "@polkadot/api" "^16.5.6"
     "@polkadot/extension-dapp" "^0.63.1"
@@ -622,13 +622,13 @@
     uint8arraylist "^2.4.8"
 
 "@libp2p/interface@^3.1.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@libp2p/interface/-/interface-3.3.0.tgz#32f9821d2cff37026cd14b60163cc2f45e44ed6f"
-  integrity sha512-SXahM/4IgpiFKTtocbXYSTA1wEUVjktmT1yBCzBbc2Vgsu1VBCg6SvsFmXo2Hbeyev3D8EU+y3uaCKDB43C/Vg==
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@libp2p/interface/-/interface-3.4.0.tgz#a4d52462abe63419617fab23ef9cdbde8e53d4b9"
+  integrity sha512-WBBw0NyLAWZz2HYfG2bXjBB2Qa0Aa6ssrQQCLZXHaMEJTdXiEagmQDojqXpy2Y6uvn1C+c4vBJkUulrgV0nfsg==
   dependencies:
     "@multiformats/dns" "^1.0.6"
     "@multiformats/multiaddr" "^13.0.3"
-    main-event "^1.0.1"
+    main-event "^1.0.5"
     multiformats "^14.0.0"
     progress-events "^1.1.0"
     uint8arraylist "^3.0.2"
@@ -1528,9 +1528,9 @@
   integrity sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==
 
 "@types/node@*", "@types/node@>=13.7.0":
-  version "26.6.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.6.4.tgz#5aaac1a7337945f7f9a2de4e0d14e7107157e813"
-  integrity sha512-ldVPDCzj7fsaGZrLB0NuHuTvJcsNasysBAqMolr/cgxrLd1xbqxIr3XJiPnHHJUCxj5sNF1vnRj9aWnrVh5Jcg==
+  version "26.6.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.6.5.tgz#cb35209e7767c503551b5fa42a48231c7441d979"
+  integrity sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==
   dependencies:
     undici-types "~8.9.0"
 
@@ -1953,15 +1953,10 @@ acorn-jsx@^5.3.2:
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
   integrity sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==
 
-acorn@^8.16.0:
+acorn@^8.16.0, acorn@^8.9.0:
   version "8.19.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.19.0.tgz#6b26fd97ce1cc9dc50bdf7ad305e9f1384d4f28a"
   integrity sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw==
-
-acorn@^8.9.0:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.18.0.tgz#4faf01b2d6d326bfeed97aea1f52220b5f4c1940"
-  integrity sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==
 
 aes-js@4.0.0-beta.5:
   version "4.0.0-beta.5"
@@ -3861,7 +3856,7 @@ magic-string@^0.30.21:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.5"
 
-main-event@^1.0.1:
+main-event@^1.0.1, main-event@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/main-event/-/main-event-1.0.5.tgz#956db3cd0d730cc96df9440e4da78a2519702ce9"
   integrity sha512-4l9z8r7Q446mhhVTwdHmfPksOYBwN2xa7ewEW2yxPVNQapIaAf57ORFLMB91SpMEMa4wXowect7fq3uMLjDnGA==
@@ -3872,9 +3867,9 @@ markdown-it-anchor@^8.6.7:
   integrity sha512-FlCHFwNnutLgVTflOYHPW2pPcl2AACqVzExlkGQNsi4CJgqOHN7YTgDd4LuhgN1BFO3TS0vLAruV1Td6dwWPJA==
 
 markdown-it@^14.1.0:
-  version "14.3.2"
-  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-14.3.2.tgz#eb41b5855120836603c33c1be4c92f58001f8a26"
-  integrity sha512-sHHjZ5fJKlgrG4qns2YwVcdNep35h5fERrfkD2YNsb9UFk0UIHarbiTaHKVMlPuWAoiilyK8Fv/jAm11slsY7Q==
+  version "14.3.3"
+  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-14.3.3.tgz#15e6e145d20b1499a7b323bb14e21062690132d8"
+  integrity sha512-L//tDAkjTjJCU6pBUSBTgs3Kg4InVaZuUZog/b6V12UKhcDQ7S78877ibbCanRExwPuYP1CZD7Gd2dxSy1GXRg==
   dependencies:
     argparse "^2.0.1"
     entities "^4.5.0"
@@ -4222,9 +4217,9 @@ p-locate@^5.0.0:
     p-limit "^3.0.2"
 
 p-queue@^9.0.0:
-  version "9.3.3"
-  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-9.3.3.tgz#c5e528c7eb361b7ba8eb5a9406902f7f2e75fc8f"
-  integrity sha512-NXAOdnEe5FsZJfT4oK84lE1Y5cFFdWlRuOo5tww8DyNMxyRXwn39fIkUtNLKppcPC+UYU/bXujNCUGDv01y7CA==
+  version "9.3.5"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-9.3.5.tgz#59682b8c0fcdcbde9cf21cd385229543a396a844"
+  integrity sha512-Lki/zhXFVmDhesBUn/yHRLW9Bte7mE7xoFHzTR8sIomV7a2z+LxYAPkGvdfidNiu4fKSfjtawixxSHcZci5QcQ==
   dependencies:
     eventemitter3 "^5.0.4"
     p-timeout "^7.0.0"
