@@ -7,7 +7,7 @@
   "packageRules": [
     {
       "matchDatasources": [
-        "node"
+        "node-version"
       ],
       "allowedVersions": "24.x"
     }
