@@ -3,5 +3,13 @@
   "extends": [
     "config:recommended"
   ],
-  "minimumReleaseAge": "1 day"
+  "minimumReleaseAge": "1 day",
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "node-version"
+      ],
+      "allowedVersions": "24.x"
+    }
+  ]
 }
