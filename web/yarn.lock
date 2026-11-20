@@ -2929,7 +2929,7 @@ fflate@^0.8.3:
   dependencies:
     flat-cache "^6.1.23"
 
-file-selector@^5.0.1:
+file-selector@^5.0.2:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-5.0.3.tgz#a02aa989b711bfe3d4435685edfa2c4c96a8c31b"
   integrity sha512-d15nlW+KKq82TlItRvCHtJ8NXCX0nwz2SEUR1MOT8W50c5q2se551ZFdhITFrWohl/5wbRPfMMF9jq4Oj1xRGQ==
@@ -4412,12 +4412,12 @@ react-dom@^19.2.3:
     scheduler "^0.28.0"
 
 react-dropzone@^20.0.0:
-  version "20.2.0"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-20.2.0.tgz#b5868a4b1f1ec0b0855a921d884bd247bccb1861"
-  integrity sha512-FRlcSp6UFT9Etg57U4+g6O6qF/jH7sUh2Hz67lQlrZJa/3FjfAFvw7DwDSItiG2vBUXTdh2wroEwXPPg7o/jkg==
+  version "20.2.1"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-20.2.1.tgz#cb75938e4159e496cf1178323c349cf6e56a3891"
+  integrity sha512-8ldzI42a+iz6jlC5t0HoOO5ce65dU8ZGo8ZpesL2E57JByC8LBUieMrkGj97YYfgMaYKwkhpkfYxKOCKAekywA==
   dependencies:
     attr-accept "^4.0.1"
-    file-selector "^5.0.1"
+    file-selector "^5.0.2"
 
 react-icons@^5.3.0:
   version "5.7.0"
